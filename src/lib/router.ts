@@ -69,6 +69,15 @@ export function setPeek(id: string | null, mode: 's' | 'c' = 's') {
   navigate(u.pathname + u.search, !!current.peek && !!id);
 }
 
+export function getRoute(): Route {
+  return current;
+}
+
+export function subscribeRoute(l: () => void) {
+  listeners.add(l);
+  return () => listeners.delete(l);
+}
+
 export function useRoute(): Route {
   return useSyncExternalStore(
     (l) => {

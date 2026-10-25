@@ -4,6 +4,7 @@ import './styles/app.css';
 import './styles/editor.css';
 import './styles/db.css';
 import App from './App';
+import { initAnalytics } from './lib/analytics';
 
-// GitHub Pages SPA redirect (see public/404.html)
+initAnalytics();
 createRoot(document.getElementById('root')!).render(<App />);

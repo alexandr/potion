@@ -8,8 +8,11 @@ export default {
       return Response.redirect(`https://${url.hostname.slice(4)}${url.pathname}${url.search}`, 301);
     }
     const upstream = new Request(ORIGIN + url.pathname + url.search, request);
-    const res = await fetch(upstream, { redirect: 'manual' });
+    // /assets/* names carry a content hash: cache them for a year at the edge and in browsers
+    const hashed = url.pathname.startsWith('/assets/');
+    const res = await fetch(upstream, { redirect: 'manual', cf: hashed ? { cacheEverything: true, cacheTtl: 31536000 } : { cacheTtl: 300 } });
     const headers = new Headers(res.headers);
+    if (hashed && res.ok) headers.set('cache-control', 'public, max-age=31536000, immutable');
     const loc = headers.get('location');
     if (loc && loc.startsWith(ORIGIN)) headers.set('location', loc.slice(ORIGIN.length) || '/');
     const out = new Response(res.body, { status: res.status, statusText: res.statusText, headers });
