@@ -217,7 +217,7 @@ export function buildSeed(): DataState {
   const quickNote = page('Quick Note', '📝', [
     B('text', 'Jot down a quick note here. Use this page as a scratchpad for anything on your mind.'),
     B('h1', 'Jot down some text'),
-    B('text', 'Select any text to see formatting options. You can make text <b>bold</b>, <i>italic</i>, <u>underlined</u>, add <a href="https://potion.so">links</a>, and <span class="c-blue">change colors</span>.'),
+    B('text', 'Select any text to see formatting options. You can make text <b>bold</b>, <i>italic</i>, <u>underlined</u>, add <a href="https://potion.page">links</a>, and <span class="c-blue">change colors</span>.'),
     B('h2', 'Make a to-do list'),
     B('todo', 'Buy groceries', { checked: true }),
     B('todo', 'Call mom'),
