@@ -64,6 +64,7 @@ export function TimelineView({ db, view, rows, locked }: { db: Block; view: View
     el.scrollLeft = ((today.getTime() - origin) / DAY) * dayW - el.clientWidth / 3;
   };
   useEffect(scrollToToday, [dayW, origin]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [scrollX, setScrollX] = useState(0);
 
   useEffect(() => {
     if (!dragState) return;
@@ -117,7 +118,7 @@ export function TimelineView({ db, view, rows, locked }: { db: Block; view: View
   return (
     <div className="db-timeline">
       <div className="tl-head">
-        <div className="tl-title">{months.find((m) => m.x <= (scrollRef.current?.scrollLeft ?? todayX) + 200)?.label}</div>
+        <div className="tl-title">{[...months].reverse().find((m) => m.x <= scrollX + (scrollRef.current?.clientWidth ?? 600) / 3)?.label ?? months[0]?.label}</div>
         <div className="tl-controls">
           <span className="tl-zoom" onClick={(e) => setZoomMenu(e.currentTarget.getBoundingClientRect())}>
             {zoom.label} <I.ChevronDown size={12} />
@@ -156,7 +157,7 @@ export function TimelineView({ db, view, rows, locked }: { db: Block; view: View
             )}
           </div>
         )}
-        <div className="tl-scroll" ref={scrollRef}>
+        <div className="tl-scroll" ref={scrollRef} onScroll={(e) => setScrollX(e.currentTarget.scrollLeft)}>
           <div className="tl-canvas" style={{ width: days * dayW, height: 52 + rows.length * ROW_H + 40 }}>
             <div className="tl-scale">
               <div className="tl-months">

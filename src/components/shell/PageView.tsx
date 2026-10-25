@@ -38,6 +38,13 @@ export function PageView({ pageId, peek }: { pageId: ID; peek?: boolean }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageId]);
 
+  // snapshot for version history after a pause in editing
+  useEffect(() => {
+    if (!page) return;
+    const t = setTimeout(() => useStore.getState().saveVersion(pageId), 15000);
+    return () => clearTimeout(t);
+  }, [page?.updatedAt, pageId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     const el = titleRef.current;
     if (el && document.activeElement !== el && el.textContent !== (page?.props.title ?? '')) el.textContent = page?.props.title ?? '';
