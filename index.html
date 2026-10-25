@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Potion — a faithful, open-source recreation of the Notion workspace that runs entirely in your browser." />
     <title>Potion</title>
+    <script>
+      // Restore the path saved by 404.html before any module reads location
+      (function () {
+        var r = sessionStorage.getItem('potion-redirect');
+        if (r) { sessionStorage.removeItem('potion-redirect'); history.replaceState(null, '', r); }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
