@@ -20,6 +20,6 @@ export async function gotoPage(page, title) {
 }
 export async function gotoTitle(page, title) {
   const id = await page.evaluate((t) => Object.values(window.__potion.getState().blocks).find((b) => b.props.title === t && !b.props.trashed)?.id, title);
-  await page.evaluate((id) => { history.pushState(null, '', location.pathname.split('/').slice(0, 2).join('/') + '/x-' + id); dispatchEvent(new PopStateEvent('popstate')); }, id);
+  await page.evaluate(([id, base]) => { history.pushState(null, '', new URL('x-' + id, base).pathname); dispatchEvent(new PopStateEvent('popstate')); }, [id, BASE]);
   await page.waitForTimeout(500);
 }
