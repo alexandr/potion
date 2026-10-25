@@ -2,7 +2,7 @@ import type { Block, BlockType, ID, PropertySchema, View } from './types';
 import type { DataState } from './store';
 
 let counter = 0;
-const sid = (p = 'b') => `${p}${(++counter).toString(36)}${Math.random().toString(36).slice(2, 9)}`;
+const sid = (p = 'b') => `${p}${(++counter).toString(36).padStart(4, '0')}demo`;
 
 interface Spec {
   type: BlockType;

@@ -205,7 +205,7 @@ export function sanitize(html: string): string {
             .filter((c) => /^(c|bg)-[a-z]+$/.test(c) || c === 'mention' || c === 'equation-inline' || c === 'comment-mark')
             .join(' ');
           if (cls) ne.setAttribute('class', cls);
-          ['data-page', 'data-user', 'data-date', 'data-expr', 'data-discussion'].forEach((a) => {
+          ['data-page', 'data-user', 'data-date', 'data-expr', 'data-discussion', 'data-icon'].forEach((a) => {
             const v = e.getAttribute(a);
             if (v != null) ne.setAttribute(a, v);
           });

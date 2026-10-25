@@ -1,0 +1,36 @@
+import { open, gotoTitle } from './lib.mjs';
+import { chromium } from 'playwright';
+const { browser, page, errors } = await open();
+await page.keyboard.press('Control+n');
+await page.waitForTimeout(300);
+await page.keyboard.type('Mentions');
+await page.keyboard.press('Enter');
+await page.keyboard.type('Hi @ana');
+await page.waitForTimeout(250);
+await page.screenshot({ path: 'shots/mention_menu.png' });
+await page.keyboard.press('Enter');
+await page.keyboard.type('see [[quick');
+await page.waitForTimeout(250);
+await page.keyboard.press('Enter');
+await page.keyboard.type('and :rocke');
+await page.waitForTimeout(250);
+await page.screenshot({ path: 'shots/emoji_inline.png' });
+await page.keyboard.press('Enter');
+await page.keyboard.type(' done');
+await page.waitForTimeout(300);
+console.log(await page.evaluate(() => document.querySelectorAll('[data-editable]')[0].innerHTML));
+await page.screenshot({ path: 'shots/mentions.png' });
+// gallery card -> peek
+await gotoTitle(page, 'Reading List');
+await page.locator('.db-gallery-card, .gallery-card, [class*="gallery"] [class*="card"]').first().click();
+await page.waitForTimeout(500);
+await page.screenshot({ path: 'shots/gallery_peek.png' });
+console.log(errors);
+await browser.close();
+// mobile
+const b2 = await chromium.launch({ executablePath: process.env.HOME + '/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell' });
+const p2 = await b2.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+await p2.goto('http://localhost:5173/potion/');
+await p2.evaluate(() => localStorage.clear()); await p2.reload(); await p2.waitForTimeout(800);
+await p2.screenshot({ path: 'shots/mobile_home.png' });
+await b2.close();

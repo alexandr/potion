@@ -435,6 +435,8 @@ export function TextBlock({ block, className, placeholder }: { block: Block; cla
         goPage(pid, pb?.props.title ?? '');
       });
     }
+    const cm = t.closest('.comment-mark') as HTMLElement | null;
+    if (cm) useUI.getState().set({ commentsOpen: true });
     const eq = t.closest('.equation-inline') as HTMLElement | null;
     if (eq) {
       e.preventDefault();

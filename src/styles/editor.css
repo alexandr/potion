@@ -159,7 +159,7 @@
 .editable a:hover { text-decoration-color: currentColor; }
 .mention { font-weight: 500; cursor: pointer; border-radius: 3px; padding: 0 1px; white-space: nowrap; }
 .mention[data-page] { border-bottom: 1px solid var(--link-underline); }
-.mention[data-page]::before { content: '📄'; font-size: 0.9em; margin-right: 2px; }
+.mention[data-page]::before { content: attr(data-icon); font-size: 0.9em; margin-right: 2px; }
 .mention[data-user], .mention-date { color: var(--text-secondary); }
 .mention:hover { background: var(--hover); }
 .equation-inline { cursor: pointer; padding: 0 2px; border-radius: 3px; }

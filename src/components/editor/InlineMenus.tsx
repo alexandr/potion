@@ -58,7 +58,8 @@ export function InlineMenus() {
       .slice(0, inline.kind === 'mention' ? 5 : 12);
     const mentionPage = (pid: string) => {
       const p = blocks[pid];
-      return `<span class="mention" data-page="${pid}" contenteditable="false">${escapeHtml(pageTitle(p))}</span>`;
+      const icon = p.props.icon && !/^(icon:|https?:|data:)/.test(p.props.icon) ? p.props.icon : '📄';
+      return `<span class="mention" data-page="${pid}" data-icon="${icon}" contenteditable="false">${escapeHtml(pageTitle(p))}</span>`;
     };
 
     if (inline.kind === 'emoji') {

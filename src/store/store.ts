@@ -110,13 +110,16 @@ function loadInitial(): DataState {
         s.versions ||= [];
         s.notifications ||= [];
         s.discussions ||= {};
+        if (window.innerWidth < 800) s.settings = { ...s.settings, sidebarCollapsed: true };
         return s;
       }
     }
   } catch {
     /* ignore */
   }
-  return buildSeed();
+  const seed = buildSeed();
+  if (window.innerWidth < 800) seed.settings.sidebarCollapsed = true;
+  return seed;
 }
 
 let suppress = 0;
