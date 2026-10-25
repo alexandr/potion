@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const url = process.argv[2] ?? 'http://localhost:5173/potion/';
+const out = process.argv[3] ?? 'shots/home.png';
+const browser = await chromium.launch({ executablePath: process.env.HOME + '/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell' });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const errors = [];
+page.on('pageerror', (e) => errors.push(e.message));
+page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+await page.goto(url);
+await page.waitForTimeout(1500);
+await page.screenshot({ path: out });
+console.log('errors:', errors.slice(0, 10));
+await browser.close();

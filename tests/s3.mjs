@@ -1,0 +1,21 @@
+import { open } from './lib.mjs';
+const { browser, page, errors } = await open();
+await page.keyboard.press('Control+n');
+await page.waitForTimeout(300);
+await page.keyboard.type('T');
+await page.keyboard.press('Enter');
+await page.keyboard.type('1. one');
+await page.keyboard.press('Enter');
+await page.keyboard.type('two');
+const dump = () => page.evaluate(() => {
+  const s = JSON.parse(localStorage.getItem('potion-workspace-v1'));
+  const recent = s.workspace.privatePages.at(-1);
+  const out = [];
+  const walk = (id, d) => { const b = s.blocks[id]; out.push('  '.repeat(d) + b.type + ':' + b.text); b.children.forEach((c) => walk(c, d + 1)); };
+  walk(recent, 0);
+  return out.join('\n');
+});
+await page.waitForTimeout(500);
+console.log(await dump());
+console.log(errors);
+await browser.close();
