@@ -31,6 +31,7 @@ import {
   splitBlock,
   turnInto,
   flatten,
+  focusTitle,
 } from './actions';
 import { useEditorUI } from './editorUI';
 import { useUI } from '../../store/ui';
@@ -282,6 +283,12 @@ export function TextBlock({ block, className, placeholder }: { block: Block; cla
           e.preventDefault();
           const rect = getCaretRect();
           focusBlock(p, 'end', rect?.left, 'last');
+        } else {
+          const title = el.closest('.page-frame')?.querySelector('.page-title') as HTMLElement | null;
+          if (title && !el.closest('.column')) {
+            e.preventDefault();
+            focusTitle(title);
+          }
         }
       }
       return;

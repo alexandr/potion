@@ -173,7 +173,12 @@ export function backspaceAtStart(id: ID): boolean {
   }
   const prev = prevVisible(id);
   const pb = prev ? s.blocks[prev] : undefined;
-  if (!pb) return false;
+  if (!pb) {
+    const title = editableEl(id)?.closest('.page-frame')?.querySelector('.page-title') as HTMLElement | null;
+    if (b.text === '' && b.children.length === 0 && s.blocks[b.parent!]?.children.length > 1) s.deleteBlock(id);
+    if (title) focusTitle(title);
+    return true;
+  }
   if (!isEditableType(pb.type)) {
     if (b.text === '' && b.children.length === 0) {
       s.deleteBlock(id);
@@ -424,4 +429,14 @@ export function ensureTrailingBlock(pageId: ID) {
   }
   const id = s.createBlock(pageId, p.children.length, 'text');
   focusBlock(id, 'start');
+}
+
+export function focusTitle(title: HTMLElement) {
+  title.focus();
+  const r = document.createRange();
+  r.selectNodeContents(title);
+  r.collapse(false);
+  const sel = window.getSelection()!;
+  sel.removeAllRanges();
+  sel.addRange(r);
 }

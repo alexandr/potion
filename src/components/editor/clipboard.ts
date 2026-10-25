@@ -145,8 +145,9 @@ export function parseMarkdown(text: string): ClipBlock[] {
     let b: ClipBlock;
     let m: RegExpMatchArray | null;
     if ((m = line.match(/^(#{1,3})\s+(.*)$/))) b = { type: (['h1', 'h2', 'h3'] as BlockType[])[m[1].length - 1], text: inlineMarkdown(m[2]), props: {}, children: [] };
-    else if ((m = line.match(/^[-*+]\s+\[([ xX])\]\s+(.*)$/))) b = { type: 'todo', text: inlineMarkdown(m[2]), props: { checked: m[1] !== ' ' }, children: [] };
-    else if ((m = line.match(/^[-*+•]\s+(.*)$/))) b = { type: 'bulleted', text: inlineMarkdown(m[1]), props: {}, children: [] };
+    else if ((m = line.match(/^[-*+]\s+\[([ xX])\]\s*(.*)$/))) b = { type: 'todo', text: inlineMarkdown(m[2]), props: { checked: m[1] !== ' ' }, children: [] };
+    else if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) b = { type: 'divider', text: '', props: {}, children: [] };
+    else if ((m = line.match(/^[-*+•](?:\s+(.*))?$/))) b = { type: 'bulleted', text: inlineMarkdown(m[1] ?? ''), props: {}, children: [] };
     else if ((m = line.match(/^\d+[.)]\s+(.*)$/))) b = { type: 'numbered', text: inlineMarkdown(m[1]), props: {}, children: [] };
     else if ((m = line.match(/^>\s?(.*)$/))) b = { type: 'quote', text: inlineMarkdown(m[1]), props: {}, children: [] };
     else if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) b = { type: 'divider', text: '', props: {}, children: [] };

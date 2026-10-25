@@ -1,0 +1,21 @@
+import { open } from './lib.mjs';
+const { browser, page, errors } = await open();
+await page.keyboard.press('Control+n');
+await page.waitForTimeout(300);
+await page.keyboard.type('Paste test');
+await page.keyboard.press('Enter');
+const paste = (data) => page.evaluate((data) => {
+  const dt = new DataTransfer();
+  for (const [k, v] of Object.entries(data)) dt.setData(k, v);
+  document.activeElement.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+}, data);
+await paste({ 'text/plain': '# Title\n- one\n- two\n    - nested\n- [x] done\n1. first\n```js\nconst a = 1;\n```\n> quoted' });
+await page.waitForTimeout(400);
+await page.keyboard.press('Enter');
+await paste({ 'text/html': '<h2>From web</h2><p>Some <b>bold</b> <a href="https://x.com">link</a></p><ul><li>A</li><li>B</li></ul>', 'text/plain': 'From web' });
+await page.waitForTimeout(400);
+const tree = await page.evaluate(() => { const s = window.__potion.getState(); const pid = s.workspace.privatePages.at(-1); const out = []; const walk = (id, d) => { const b = s.blocks[id]; out.push('  '.repeat(d) + b.type + ':' + b.text.slice(0, 40)); b.children.forEach((c) => walk(c, d + 1)); }; walk(pid, 0); return out.join('\n'); });
+console.log(tree);
+await page.screenshot({ path: 'shots/paste.png' });
+console.log(errors);
+await browser.close();

@@ -53,7 +53,20 @@ export function openLinkEditor() {
   useToolbar.getState().set({ rect, blockId: root.getAttribute('data-editable'), saved: saveSelection(), sub: 'link' });
 }
 
-let lastColor: { c: string | null; kind: 'c' | 'bg' } = { c: 'red', kind: 'c' };
+let lastColor: { c: string | null; kind: 'c' | 'bg' } = { c: 'yellow', kind: 'bg' };
+
+export function repeatLastColor() {
+  applyColor(lastColor.c ? `${lastColor.kind}-${lastColor.c}` : null, lastColor.kind);
+}
+
+export function openCommentComposer() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+  const root = editableOfSelection();
+  if (!root) return;
+  const rect = sel.getRangeAt(0).getBoundingClientRect();
+  useToolbar.getState().set({ rect, blockId: root.getAttribute('data-editable'), saved: saveSelection(), sub: 'comment' });
+}
 
 export function InlineToolbar() {
   const { rect, blockId, sub, set } = useToolbar();

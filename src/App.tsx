@@ -70,6 +70,20 @@ function useGlobalKeys() {
       } else if (e.key === ']' && !inInput) {
         e.preventDefault();
         history.forward();
+      } else if (k === 'l' && !e.shiftKey && !inInput && !ae?.isContentEditable) {
+        const r = new URL(location.href);
+        e.preventDefault();
+        navigator.clipboard?.writeText(r.origin + r.pathname).catch(() => {});
+        ui.showToast('Copied link to clipboard');
+      } else if (k === 'm' && e.shiftKey) {
+        e.preventDefault();
+        const sel = window.getSelection();
+        if (sel && !sel.isCollapsed && ae?.isContentEditable) {
+          import('./components/editor/InlineToolbar').then((m) => m.openCommentComposer());
+        } else ui.set({ commentsOpen: true });
+      } else if (k === 'h' && e.shiftKey && ae?.isContentEditable) {
+        e.preventDefault();
+        import('./components/editor/InlineToolbar').then((m) => m.repeatLastColor());
       } else if (k === 'u' && e.shiftKey) {
         e.preventDefault();
         ui.set({ commentsOpen: !ui.commentsOpen });
