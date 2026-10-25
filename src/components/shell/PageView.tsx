@@ -14,6 +14,7 @@ import { PageProperties } from '../db/Properties';
 import { goPage } from '../../lib/router';
 import { PageComments } from './Comments';
 import { relTime } from '../../lib/time';
+import { BRAND } from '../../lib/brand';
 
 export function PageView({ pageId, peek }: { pageId: ID; peek?: boolean }) {
   const page = useStore((s) => s.blocks[pageId]);
@@ -28,7 +29,7 @@ export function PageView({ pageId, peek }: { pageId: ID; peek?: boolean }) {
   useEffect(() => {
     if (!page) return;
     useStore.getState().visit(pageId);
-    document.title = pageTitle(page) + ' | Potion';
+    document.title = pageTitle(page) + ` | ${BRAND}`;
     // focus title of new empty pages
     if (!page.props.title && page.children.length === 0 && titleRef.current) {
       titleRef.current.focus();
@@ -309,7 +310,7 @@ function EmptyPageHints({ pageId }: { pageId: ID }) {
         <div className="empty-page-ph">Press Enter to continue with an empty page, or pick a template (↑↓ to select)</div>
       </div>
       <div className="empty-hints">
-        <div className="eh-item" onClick={() => useUI.getState().showToast('Potion AI is not available in this demo workspace')}>
+        <div className="eh-item" onClick={() => useUI.getState().showToast(`${BRAND} AI is not available in this demo workspace`)}>
           <I.SparkleIcon size={16} /> Ask AI
         </div>
         <div className="eh-item" onClick={() => start('todo')}>

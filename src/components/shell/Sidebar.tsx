@@ -148,7 +148,7 @@ export function Sidebar({ floating }: { floating?: boolean }) {
         </div>
         <NavItem icon={<I.SearchIcon size={18} />} label="Search" onClick={() => ui.set({ searchOpen: true })} />
         <NavItem icon={<I.HomeIcon size={18} />} label="Home" active={!route.pageId} onClick={() => goPage(null)} />
-        <NavItem icon={<I.NotionAiIcon size={18} />} label="Potion AI" onClick={() => ui.showToast('Potion AI is not available in this demo workspace')} />
+        <NavItem icon={<I.NotionAiIcon size={18} />} label={`${BRAND} AI`} onClick={() => ui.showToast(`${BRAND} AI is not available in this demo workspace`)} />
         <NavItem
           icon={<I.InboxIcon size={18} />}
           label="Inbox"
@@ -549,6 +549,7 @@ export function RenameBox({ id, onDone }: { id: ID; onDone: () => void }) {
 }
 
 import { EmojiPopover } from '../ui/EmojiPicker';
+import { BRAND } from '../../lib/brand';
 export function IconPicker({ id, anchor, onClose }: { id: ID; anchor: DOMRect | HTMLElement; onClose: () => void }) {
   return (
     <EmojiPopover

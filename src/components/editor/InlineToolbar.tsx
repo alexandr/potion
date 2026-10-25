@@ -20,6 +20,7 @@ import { turnInto } from './actions';
 import { escapeHtml } from '../../lib/dom';
 import { renderKatex } from './katex';
 import { Tooltip } from '../ui/Tooltip';
+import { BRAND } from '../../lib/brand';
 
 interface ToolbarState {
   rect: DOMRect | null;
@@ -248,7 +249,7 @@ export function InlineToolbar() {
               <I.SparkleIcon size={18} style={{ color: 'var(--purple, #9065b0)' }} />
               <input autoFocus placeholder="Ask AI anything…" className="ai-input" onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  useUI.getState().showToast('Potion AI is not available in this demo workspace');
+                  useUI.getState().showToast(`${BRAND} AI is not available in this demo workspace`);
                   closeSub();
                 }
               }} />
@@ -317,7 +318,7 @@ function aiTransform(kind: string, done: () => void) {
     done();
     return;
   }
-  useUI.getState().showToast('Potion AI is not available in this demo workspace');
+  useUI.getState().showToast(`${BRAND} AI is not available in this demo workspace`);
   done();
 }
 

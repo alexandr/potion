@@ -10,6 +10,7 @@ import { relTime, fullDate } from '../../lib/time';
 import { BlockList } from '../editor/Block';
 import { TEMPLATES, instantiateTemplate } from '../../lib/templates';
 import { parseMarkdown, insertClipBlocks, type ClipBlock } from '../editor/clipboard';
+import { BRAND } from '../../lib/brand';
 
 // ---------------- Trash ----------------
 export function TrashPopover() {
@@ -216,7 +217,7 @@ export function SettingsModal() {
               <div className="set-row">
                 <div>
                   <div className="set-label">Appearance</div>
-                  <div className="set-desc">Customize how Potion looks on your device.</div>
+                  <div className="set-desc">Customize how {BRAND} looks on your device.</div>
                 </div>
                 <div className="set-select" onClick={(e) => setThemeMenu(e.currentTarget.getBoundingClientRect())}>
                   {settings.theme === 'system' ? 'Use system setting' : settings.theme === 'dark' ? 'Dark' : 'Light'}
@@ -242,7 +243,7 @@ export function SettingsModal() {
               <div className="set-row">
                 <div>
                   <div className="set-label">Open on start</div>
-                  <div className="set-desc">Choose what to show when Potion starts or when you switch workspaces.</div>
+                  <div className="set-desc">Choose what to show when {BRAND} starts or when you switch workspaces.</div>
                 </div>
                 <div className="set-select" onClick={() => s().updateSettings({ startPage: settings.startPage === 'home' ? 'last' : 'home' })}>
                   {settings.startPage === 'home' ? 'Home' : 'Last visited page'}
@@ -283,7 +284,7 @@ export function SettingsModal() {
           {tab === 'connections' && (
             <>
               <h2>Connections</h2>
-              <div className="set-desc">Connect Potion with your favorite tools. No connections in the demo workspace.</div>
+              <div className="set-desc">Connect {BRAND} with your favorite tools. No connections in the demo workspace.</div>
             </>
           )}
           {tab === 'general' && (
@@ -404,20 +405,20 @@ function ImportTab() {
         Import Markdown, text or JSON backups into a new private page.
       </div>
       <div className="import-grid">
-        {['Text & Markdown', 'Potion backup (JSON)', 'CSV', 'HTML'].map((l) => (
+        {['Text & Markdown', `${BRAND} backup (JSON)`, 'CSV', 'HTML'].map((l) => (
           <label key={l} className="import-tile">
             <I.ImportIcon size={20} />
             <span>{l}</span>
             <input
               type="file"
               hidden
-              accept={l.startsWith('Text') ? '.md,.txt,.markdown' : l.startsWith('Potion') ? '.json' : l === 'CSV' ? '.csv' : '.html,.htm'}
+              accept={l.startsWith('Text') ? '.md,.txt,.markdown' : l.startsWith(BRAND) ? '.json' : l === 'CSV' ? '.csv' : '.html,.htm'}
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 if (!f) return;
                 f.text().then((text) => {
                   const s = useStore.getState();
-                  if (l.startsWith('Potion')) {
+                  if (l.startsWith(BRAND)) {
                     try {
                       s.importState(JSON.parse(text));
                       useUI.getState().showToast('Workspace imported');

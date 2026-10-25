@@ -9,6 +9,7 @@ import { deleteSelection, focusBlock, selectedBlocksInOrder, topLevelSelection, 
 import { PagePicker } from './InlineMenus';
 import { pagePath } from '../../lib/router';
 import { relTime } from '../../lib/time';
+import { BRAND } from '../../lib/brand';
 
 export function BlockMenu() {
   const bm = useEditorUI((s) => s.blockMenu);
@@ -105,7 +106,7 @@ export function BlockMenu() {
         close();
       },
     });
-    list.push({ key: 'ai', icon: <I.SparkleIcon size={16} />, label: 'Ask AI', shortcut: `${MOD}J`, run: () => { useUI.getState().showToast('Potion AI is not available in this demo workspace'); close(); } });
+    list.push({ key: 'ai', icon: <I.SparkleIcon size={16} />, label: 'Ask AI', shortcut: `${MOD}J`, run: () => { useUI.getState().showToast(`${BRAND} AI is not available in this demo workspace`); close(); } });
     return list;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bm, block]);

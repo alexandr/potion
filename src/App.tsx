@@ -15,6 +15,7 @@ import { InlineMenus, LinkPickerHost } from './components/editor/InlineMenus';
 import { InlineToolbar } from './components/editor/InlineToolbar';
 import { BlockMenu } from './components/editor/BlockMenu';
 import { focusBlock } from './components/editor/actions';
+import { BRAND } from './lib/brand';
 
 function useTheme() {
   const theme = useStore((s) => s.settings.theme);
@@ -115,7 +116,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!route.pageId) document.title = 'Home | Potion';
+    if (!route.pageId) document.title = `Home | ${BRAND}`;
     useUI.getState().select([]);
     // scroll to block hash
     if (location.hash.length > 1) {

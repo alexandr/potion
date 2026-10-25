@@ -1,5 +1,6 @@
 import type { Block, BlockType, ID, PropertySchema, View } from './types';
 import type { DataState } from './store';
+import { BRAND, DOMAIN } from '../lib/brand';
 
 let counter = 0;
 const sid = (p = 'b') => `${p}${(++counter).toString(36).padStart(4, '0')}demo`;
@@ -197,7 +198,7 @@ export function buildSeed(): DataState {
 
   // ---------- pages ----------
   const gettingStarted = page('Getting Started', '👋', [
-    B('text', 'Welcome to Potion!'),
+    B('text', `Welcome to ${BRAND}!`),
     B('text', 'Here are the basics:'),
     B('todo', 'Click anywhere and just start typing'),
     B('todo', 'Hit <code>/</code> to see all the types of content you can add - headers, videos, sub pages, etc.'),
@@ -217,7 +218,7 @@ export function buildSeed(): DataState {
   const quickNote = page('Quick Note', '📝', [
     B('text', 'Jot down a quick note here. Use this page as a scratchpad for anything on your mind.'),
     B('h1', 'Jot down some text'),
-    B('text', 'Select any text to see formatting options. You can make text <b>bold</b>, <i>italic</i>, <u>underlined</u>, add <a href="https://potion.page">links</a>, and <span class="c-blue">change colors</span>.'),
+    B('text', `Select any text to see formatting options. You can make text <b>bold</b>, <i>italic</i>, <u>underlined</u>, add <a href="https://${DOMAIN}">links</a>, and <span class="c-blue">change colors</span>.`),
     B('h2', 'Make a to-do list'),
     B('todo', 'Buy groceries', { checked: true }),
     B('todo', 'Call mom'),
@@ -225,7 +226,7 @@ export function buildSeed(): DataState {
     B('h2', 'Create sub-pages'),
     B('text', 'Pages can live inside other pages, so you can organize everything in a nested structure.'),
     B('h2', 'Embed code'),
-    B('code', "const greet = (name) => {\n  return `Hello, ${name}!`;\n};\n\nconsole.log(greet('Potion'));", { language: 'javascript' }),
+    B('code', `const greet = (name) => {\n  return \`Hello, \${name}!\`;\n};\n\nconsole.log(greet('${BRAND}'));`, { language: 'javascript' }),
     B('h2', 'Write some math'),
     B('equation', '', { expression: 'e^{i\\pi} + 1 = 0' }),
     B('quote', '“The best way to predict the future is to invent it.” — Alan Kay'),
@@ -350,16 +351,16 @@ export function buildSeed(): DataState {
   blocks[teamId].children = dedupe([...blocks[teamId].children, mnId]);
 
   const users = {
-    [ME]: { id: ME, name: 'Demo User', email: 'demo@potion.so', color: '#E16259' },
-    u_ana: { id: 'u_ana', name: 'Ana Silva', email: 'ana@potion.so', color: '#2383E2' },
-    u_ben: { id: 'u_ben', name: 'Ben Carter', email: 'ben@potion.so', color: '#0F7B6C' },
-    u_cho: { id: 'u_cho', name: 'Cho Min', email: 'cho@potion.so', color: '#9065B0' },
+    [ME]: { id: ME, name: 'Demo User', email: `demo@${DOMAIN}`, color: '#E16259' },
+    u_ana: { id: 'u_ana', name: 'Ana Silva', email: `ana@${DOMAIN}`, color: '#2383E2' },
+    u_ben: { id: 'u_ben', name: 'Ben Carter', email: `ben@${DOMAIN}`, color: '#0F7B6C' },
+    u_cho: { id: 'u_cho', name: 'Cho Min', email: `cho@${DOMAIN}`, color: '#9065B0' },
   };
 
   return {
     blocks,
     workspace: {
-      name: "Demo User's Potion",
+      name: `Demo User's ${BRAND}`,
       icon: 'D',
       privatePages: [gsId, qnId, phId],
       teamPages: [teamId, roadmapId],
@@ -386,7 +387,7 @@ export function buildSeed(): DataState {
     notifications: [
       { id: 'n1', pageId: teamId, text: 'edited <b>Team Wiki</b>', at: t0 - 3600000, read: false, actor: 'u_ana' },
       { id: 'n2', pageId: roadmapId, text: 'invited you to <b>Product Roadmap</b>', at: t0 - 2 * DAY, read: false, actor: 'u_ben' },
-      { id: 'n3', pageId: gsId, text: 'Welcome to Potion! Start with <b>Getting Started</b>', at: t0 - 3 * DAY, read: true, actor: 'u_cho' },
+      { id: 'n3', pageId: gsId, text: `Welcome to ${BRAND}! Start with <b>Getting Started</b>`, at: t0 - 3 * DAY, read: true, actor: 'u_cho' },
     ],
     versions: [],
   };

@@ -11,6 +11,7 @@ import { editedLabel, relTime } from '../../lib/time';
 import { PagePicker } from '../editor/InlineMenus';
 import { exportPage } from '../../lib/exporter';
 import { RenameBox } from './Sidebar';
+import { BRAND } from '../../lib/brand';
 
 export function Breadcrumbs({ pageId }: { pageId: ID }) {
   const blocks = useStore((s) => s.blocks);
@@ -269,7 +270,7 @@ function ShareMenu({ pageId, anchor, onClose }: { pageId: ID; anchor: DOMRect; o
                   <I.GlobeIcon size={48} />
                 </div>
                 <div className="publish-title">Publish to web</div>
-                <div className="publish-desc">Create a website with Potion.</div>
+                <div className="publish-desc">Create a website with {BRAND}.</div>
                 <button className="btn-primary wide" onClick={() => useStore.getState().setProps(pageId, { published: true })}>
                   Publish
                 </button>

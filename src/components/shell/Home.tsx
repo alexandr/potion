@@ -8,6 +8,7 @@ import * as I from '../ui/Icons';
 import { useUI } from '../../store/ui';
 import { TEMPLATES, instantiateTemplate } from '../../lib/templates';
 import { Tag } from '../db/CellValue';
+import { BRAND } from '../../lib/brand';
 
 function greeting() {
   const h = new Date().getHours();
@@ -98,7 +99,7 @@ export function Home() {
             <div className="ev-left">
               <I.CalendarIcon size={28} />
               <div className="ev-title">Connect your calendar</div>
-              <div className="ev-desc">See your upcoming events and join meetings from Potion.</div>
+              <div className="ev-desc">See your upcoming events and join meetings from {BRAND}.</div>
               <button className="btn-text-blue" onClick={() => useUI.getState().showToast('Calendar sync is not available in the demo')}>
                 Connect Calendar
               </button>

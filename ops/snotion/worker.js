@@ -12,6 +12,12 @@ export default {
     const headers = new Headers(res.headers);
     const loc = headers.get('location');
     if (loc && loc.startsWith(ORIGIN)) headers.set('location', loc.slice(ORIGIN.length) || '/');
-    return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+    const out = new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+    if (!(headers.get('content-type') || '').includes('text/html')) return out;
+    // The app picks its name from the hostname; this covers what crawlers and link previews read from the HTML
+    return new HTMLRewriter()
+      .on('title', { text(t) { if (t.text) t.replace(t.text.replaceAll('Potion', 'Snotion')); } })
+      .on('meta[name="description"]', { element(e) { e.setAttribute('content', (e.getAttribute('content') || '').replaceAll('Potion', 'Snotion')); } })
+      .transform(out);
   },
 };
