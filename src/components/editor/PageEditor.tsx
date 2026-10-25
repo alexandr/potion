@@ -20,6 +20,7 @@ import {
 } from './actions';
 import { onCopyEvent, parseMarkdown, insertClipBlocks } from './clipboard';
 import { Tooltip } from '../ui/Tooltip';
+import { ReadOnlyContext } from './readOnly';
 
 interface DropTarget {
   id: ID;
@@ -511,7 +512,9 @@ export function PageEditor({ pageId, readOnly }: { pageId: ID; readOnly?: boolea
 
   return (
     <div className="page-blocks" ref={rootRef} data-page-blocks={pageId}>
-      <BlockList ids={page.children} readOnly={readOnly} />
+      <ReadOnlyContext.Provider value={!!readOnly}>
+        <BlockList ids={page.children} readOnly={readOnly} />
+      </ReadOnlyContext.Provider>
       {!readOnly && hover && (
         <div className="block-handle" style={{ top: hover.top, left: hover.left - 50 }} onMouseEnter={() => (hoverFrozen.current = false)}>
           <Tooltip label={<><b>Click</b> to add below<br /><b>{navigator.platform.includes('Mac') ? 'Option' : 'Alt'}-click</b> to add a block above</>}>

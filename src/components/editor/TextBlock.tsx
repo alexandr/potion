@@ -38,6 +38,7 @@ import { getPageOf } from '../../store/store';
 import { openLinkEditor } from './InlineToolbar';
 import { highlightCode } from './codeHighlight';
 import { pasteInto } from './clipboard';
+import { useReadOnly } from './readOnly';
 
 const MD_BLOCK: [RegExp, Block['type'], Record<string, any>?][] = [
   [/^#\s$/, 'h1'],
@@ -99,6 +100,7 @@ function applyInlineMarkdown(el: HTMLElement): boolean {
 
 export function TextBlock({ block, className, placeholder }: { block: Block; className?: string; placeholder?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const readOnly = useReadOnly();
   const id = block.id;
   const isCode = block.type === 'code';
 
@@ -459,6 +461,7 @@ export function TextBlock({ block, className, placeholder }: { block: Block; cla
       onClick={onClick}
       highlight={isCode ? (t) => highlightCode(t, block.props.language) : undefined}
       spellCheck={!isCode}
+      readOnly={readOnly}
     />
   );
 }

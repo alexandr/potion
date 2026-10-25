@@ -9,7 +9,7 @@ import { Popover, MenuItem, Toggle, MOD, SHIFT, ALT } from '../ui/Popover';
 import { relTime, fullDate } from '../../lib/time';
 import { BlockList } from '../editor/Block';
 import { TEMPLATES, instantiateTemplate } from '../../lib/templates';
-import { parseMarkdown, insertClipBlocks } from '../editor/clipboard';
+import { parseMarkdown, insertClipBlocks, type ClipBlock } from '../editor/clipboard';
 
 // ---------------- Trash ----------------
 export function TrashPopover() {
@@ -565,7 +565,10 @@ export function TemplatesModal() {
                 </button>
               </div>
               <div className="tpl-body">
-                <pre className="tpl-md">{preview}</pre>
+                <div className="hist-title">
+                  {t.icon} {t.name}
+                </div>
+                <TemplatePreview markdown={preview ?? ''} />
               </div>
             </>
           )}
@@ -573,6 +576,20 @@ export function TemplatesModal() {
       </div>
     </div>
   );
+}
+
+function TemplatePreview({ markdown }: { markdown: string }) {
+  const { blocks, ids } = useMemo(() => {
+    const out: Record<ID, Block> = {};
+    let n = 0;
+    const add = (cb: ClipBlock): ID => {
+      const id = `tp${n++}`;
+      out[id] = { id, type: cb.type, text: cb.text, props: cb.props, children: cb.children.map(add), parent: null, createdAt: 0, updatedAt: 0, createdBy: '', lastEditedBy: '' };
+      return id;
+    };
+    return { blocks: out, ids: parseMarkdown(markdown).map(add) };
+  }, [markdown]);
+  return <SnapshotList blocks={blocks} ids={ids} />;
 }
 
 // ---------------- Version history ----------------
@@ -655,6 +672,7 @@ function SnapshotList({ blocks, ids }: { blocks: Record<ID, Block>; ids: ID[] })
           <div key={id} className={`snap ${cls}`}>
             {b.type === 'todo' && <span className="snap-box">{b.props.checked ? '☑' : '☐'}</span>}
             {b.type === 'bulleted' && <span className="snap-box">•</span>}
+            {b.type === 'numbered' && <span className="snap-box">{ids.filter((x, j) => j <= ids.indexOf(id) && blocks[x]?.type === 'numbered').length}.</span>}
             {b.type === 'page' ? <span className="snap-page">📄 {b.props.title || 'Untitled'}</span> : b.type === 'divider' ? <hr /> : <span dangerouslySetInnerHTML={{ __html: b.text || (b.type === 'image' ? '[image]' : '') }} />}
             {b.children.length > 0 && b.type !== 'page' && (
               <div style={{ paddingLeft: 24 }}>

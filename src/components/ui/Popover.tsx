@@ -90,6 +90,8 @@ export function Popover({
     left = Math.max(8, Math.min(left, vw - w - 8));
     top = Math.max(8, top);
     setPos({ left, top, maxHeight });
+    const af = el.querySelector('[autofocus], input[data-autofocus], textarea[data-autofocus]') as HTMLElement | null;
+    if (af && !el.contains(document.activeElement)) af.focus({ preventScroll: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchor, placement, offset]);
 
@@ -134,7 +136,7 @@ export function Popover({
           top: pos?.top ?? -9999,
           width,
           maxHeight: pos?.maxHeight,
-          visibility: pos ? 'visible' : 'hidden',
+          opacity: pos ? undefined : 0,
           ...style,
         }}
         onMouseDown={(e) => e.stopPropagation()}

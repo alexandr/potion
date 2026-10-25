@@ -7,6 +7,7 @@ import { relTime } from '../../lib/time';
 import * as I from '../ui/Icons';
 import { useUI } from '../../store/ui';
 import { TEMPLATES, instantiateTemplate } from '../../lib/templates';
+import { Tag } from '../db/CellValue';
 
 function greeting() {
   const h = new Date().getHours();
@@ -130,7 +131,7 @@ export function Home() {
                 <div key={t.id} className="task-row" onClick={() => setPeek(t.id, 's')}>
                   <PageIconView icon={t.props.icon} size={16} page={t} />
                   <span className="task-title">{pageTitle(t)}</span>
-                  {opt && <span className={`tag tag-${opt.color} status-tag`}><span className={`status-dot dot-${opt.color}`} />{opt.name}</span>}
+                  {opt && <Tag name={opt.name} color={opt.color} status small />}
                   {due && t.props.values?.[due.id]?.start && <span className="task-due">{new Date(t.props.values[due.id].start + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>}
                 </div>
               );
